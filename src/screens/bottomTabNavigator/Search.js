@@ -2,7 +2,12 @@ import { StyleSheet, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TextInput } from "react-native-paper";
+
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import All from "./TopPages/AllOptions";
+import OutAndAdventure from "./TopPages/OutAndAdventure";
+import FoodAndDrink from "./TopPages/FoodAndDrink";
+import ArtAndCulture from "./TopPages/ArtAndCulture";
 
 // import {
 //   useFonts,
@@ -12,7 +17,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 //   PlusJakartaSans_700Bold,
 // } from "@expo-google-fonts/plus-jakarta-sans";
 
-const CategoryTab = createMaterialTopTabNavigator();
+const CategoryTabs = createMaterialTopTabNavigator();
 
 const Search = () => {
   //   let [fontsLoaded, fontError] = useFonts({
@@ -26,45 +31,107 @@ const Search = () => {
   //     return null;
   //   }
 
-  return (
-    <SafeAreaView style={styles.container}>
-      {/* header container */}
-      <View style={styles.topContainer}>
-        <View style={styles.headerContainer}>
-          <View style={{ height: 48, width: 48 }} />
-          <View style={styles.headingTextContainer}>
-            <Text style={styles.headingText}>San Francisco</Text>
+  const Header = () => {
+    return (
+      <SafeAreaView style={styles.container}>
+        {/* header container */}
+        <View style={styles.topContainer}>
+          <View style={styles.headerContainer}>
+            <View style={{ height: 48, width: 48 }} />
+            <View style={styles.headingTextContainer}>
+              <Text style={styles.headingText}>Islamabad</Text>
+            </View>
+            <Ionicons name="location-outline" size={24} color="black" />
           </View>
-          <Ionicons name="location-outline" size={24} color="black" />
         </View>
-      </View>
 
-      {/* search container */}
-      <View style={styles.topContainer}>
-        <View style={{ height: 48, width: 358, justifyContent: "center", alignItems: "center" }}>
-          <TextInput
+        {/* search container */}
+        <View style={styles.topContainer}>
+          <View
             style={{
-              fontSize: 16, //fontFamily: "Plus_Jakarta_Sans-Regular"
-              backgroundColor: "#E8F0F2",
-              width: 340,
+              height: 48,
+              width: 358,
+              justifyContent: "center",
+              alignItems: "center",
             }}
-            placeholder="What are you looking for?"
-            placeholderTextColor={"#4D7D99"}
-            mode="outlined"
-            outlineColor="transparent"
-            left={<TextInput.Icon icon="magnify" color="#4D7D99" size={35} />}
-          ></TextInput>
+          >
+            <TextInput
+              style={{
+                fontSize: 16, //fontFamily: "Plus_Jakarta_Sans-Regular"
+                backgroundColor: "#E8F0F2",
+                width: 340,
+              }}
+              placeholder="What are you looking for?"
+              placeholderTextColor={"#4D7D99"}
+              mode="outlined"
+              outlineColor="transparent"
+              left={<TextInput.Icon icon="magnify" color="#4D7D99" size={35} />}
+            ></TextInput>
+          </View>
         </View>
-        
+      </SafeAreaView>
+    );
+  };
 
-      </View>
-    </SafeAreaView>
+  return (
+    <>
+      <Header />
+      <CategoryTabs.Navigator
+        initialRouteName="All"
+        screenOptions={{
+          lazy: true,
+          lazyPreloadDistance: 1,
+          lazyPlaceholder: () => {
+            return (
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text style={{ color: "#4D7D99", opacity: 0.75 }}>
+                  Loading...
+                </Text>
+              </View>
+            );
+          },
+
+          tabBarLabelStyle: {
+            fontSize: 14,
+            fontWeight: "700",
+            textTransform: "capitalize",
+          },
+          tabBarIndicatorStyle: {
+            backgroundColor: "#4D7D99",
+            height: 3,
+            opacity: 0.4,
+          },
+          tabBarItemStyle: { width: "auto", padding: 0 },
+          tabBarStyle: {
+            marginHorizontal: 16,
+          },
+
+          tabBarActiveTintColor: "#0D171C",
+          tabBarInactiveTintColor: "#4D7D99",
+          tabBarScrollEnabled: true,
+          tabBarGap: 32,
+        }}
+      >
+        <CategoryTabs.Screen name="All" component={All} />
+        <CategoryTabs.Screen
+          name="Outdoor & Adventure"
+          component={OutAndAdventure}
+        />
+        <CategoryTabs.Screen name="Food & Drink" component={FoodAndDrink} />
+        <CategoryTabs.Screen name="Art & Culture" component={ArtAndCulture} />
+      </CategoryTabs.Navigator>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
   },
